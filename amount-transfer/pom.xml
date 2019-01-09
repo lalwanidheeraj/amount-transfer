@@ -1,0 +1,44 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.revoult.transfer</groupId>
+	<artifactId>amount-transfer</artifactId>
+	<version>1.0</version>
+	<name>amount-transfer</name>
+	<description>Rest Interfaces to handle all bank account related activities</description>
+	<properties>
+		<tomcat.version>2.1</tomcat.version>
+		<javax.version>2.2.0</javax.version>
+		<hibernate.version>5.3.0.Final</hibernate.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.eclipse.persistence</groupId>
+			<artifactId>javax.persistence</artifactId>
+			<version>${javax.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+	</dependencies>
+	<build>
+		<finalName>AmountTransfer</finalName>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.tomcat.maven</groupId>
+					<artifactId>tomcat7-maven-plugin</artifactId>
+					<version>${tomcat.version}</version>
+					<configuration>
+						<!-- context -->
+						<path>/account</path>
+						<finalName>AmountTransfer.jar</finalName>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+</project>
