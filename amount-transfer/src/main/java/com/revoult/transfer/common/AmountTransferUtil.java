@@ -6,10 +6,6 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * 
- */
-
-/**
  * @author Dheeraj Lalwani
  * This is the utility class which loads the datasource properties from the property file.
  */
