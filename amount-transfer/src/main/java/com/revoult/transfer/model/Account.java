@@ -5,20 +5,25 @@ package com.revoult.transfer.model;
 
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
- * @author HP
- *
+ * @author Dheeraj Lalwani
+ * This is model class to map the database result to the Account object.
  */
 public class Account {
 	
-	private Integer accountId;
+	private Long accountId;
 	private AccountType accountType;
 	private BigDecimal balance;
 	private String currency;
-	public Integer getAccountId() {
+	@JsonIgnore
+	private Boolean isActive;
+	
+	public Long getAccountId() {
 		return accountId;
 	}
-	public void setAccountId(Integer accountId) {
+	public void setAccountId(Long accountId) {
 		this.accountId = accountId;
 	}
 	public AccountType getAccountType() {
@@ -38,6 +43,12 @@ public class Account {
 	}
 	public void setCurrency(String currency) {
 		this.currency = currency;
+	}
+	public Boolean getIsActive() {
+		return isActive;
+	}
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
 	}
 	@Override
 	public int hashCode() {

@@ -3,12 +3,15 @@
  */
 package com.revoult.transfer.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
- * @author HP
- *
+ * @author Dheeraj Lalwani
+ * This is model class to map the database result to the AccountType object.
  */
 public class AccountType {
 	
+	@JsonIgnore
 	private Integer accountTypeId;
 	private String accountType;
 	public Integer getAccountTypeId() {
