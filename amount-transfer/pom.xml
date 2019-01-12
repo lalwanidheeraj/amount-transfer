@@ -8,15 +8,19 @@
 	<description>Rest Interfaces to handle all bank account related
 		activities
 	</description>
+
 	<properties>
 		<tomcat.version>9.0.0.M6</tomcat.version>
 		<jersey.server.version>1.19</jersey.server.version>
 		<jersey.glassfish.version>2.22.1</jersey.glassfish.version>
 		<fasterxml.version>2.9.7</fasterxml.version>
 		<h2.version>1.4.196</h2.version>
+		<swagger.version>1.5.8</swagger.version>
+		<junit.version>4.11</junit.version>
 	</properties>
 
 	<dependencies>
+		<!-- Embedded tomcat dependencies -->
 		<dependency>
 			<groupId>org.apache.tomcat.embed</groupId>
 			<artifactId>tomcat-embed-core</artifactId>
@@ -27,16 +31,7 @@
 			<artifactId>tomcat-embed-logging-juli</artifactId>
 			<version>${tomcat.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>com.sun.jersey</groupId>
-			<artifactId>jersey-server</artifactId>
-			<version>${jersey.server.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.sun.jersey</groupId>
-			<artifactId>jersey-servlet</artifactId>
-			<version>${jersey.server.version}</version>
-		</dependency>
+		<!-- Jersey dependencies for rest services and validation -->
 		<dependency>
 			<groupId>org.glassfish.jersey.containers</groupId>
 			<artifactId>jersey-container-servlet</artifactId>
@@ -48,49 +43,115 @@
 			<version>${jersey.glassfish.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-json-jackson</artifactId>
+			<version>${jersey.glassfish.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.glassfish.jersey.core</groupId>
 			<artifactId>jersey-client</artifactId>
 			<version>${jersey.glassfish.version}</version>
 		</dependency>
-		<dependency> 
-			<groupId>org.glassfish.jersey.ext</groupId> 
-			<artifactId>jersey-bean-validation</artifactId> 
-			<version>${jersey.glassfish.version}</version> 
-		</dependency>
 		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-annotations</artifactId>
-			<version>${fasterxml.version}</version>
+			<groupId>org.glassfish.jersey.ext</groupId>
+			<artifactId>jersey-bean-validation</artifactId>
+			<version>${jersey.glassfish.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.jaxrs</groupId>
-			<artifactId>jackson-jaxrs-json-provider</artifactId>
-			<version>${fasterxml.version}</version>
-		</dependency>
+		<!-- H2 in-memory db dependency -->
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<version>${h2.version}</version>
 		</dependency>
+		<!-- Swagger rest-api documentation dependencies -->
 		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.16</version>
+			<groupId>io.swagger</groupId>
+			<artifactId>swagger-annotations</artifactId>
+			<version>${swagger.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.swagger</groupId>
+			<artifactId>swagger-core</artifactId>
+			<version>${swagger.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.swagger</groupId>
+			<artifactId>swagger-jaxrs</artifactId>
+			<version>${swagger.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.swagger</groupId>
+			<artifactId>swagger-models</artifactId>
+			<version>${swagger.version}</version>
+		</dependency>
+		<!-- Testing Frameworks -->
+		<dependency>
+			<groupId>org.glassfish.jersey.test-framework.providers</groupId>
+			<artifactId>jersey-test-framework-provider-jetty</artifactId>
+			<version>${jersey.glassfish.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- IBAN generation API -->
+		<dependency>
+			<groupId>org.iban4j</groupId>
+			<artifactId>iban4j</artifactId>
+			<version>3.2.1</version>
 		</dependency>
 	</dependencies>
 	<build>
 		<finalName>AmountTransfer</finalName>
 		<plugins>
+			<!-- <plugin> <artifactId>maven-assembly-plugin</artifactId> <version>2.2-beta-4</version> 
+				<executions> <execution> <id>jar-with-dependencies</id> <phase>package</phase> 
+				<goals> <goal>single</goal> </goals> <configuration> <archive> <manifest> 
+				<mainClass>com.revoult.transfer.AmountTransferApp</mainClass> </manifest> 
+				</archive> <descriptorRefs> <descriptorRef>jar-with-dependencies</descriptorRef> 
+				</descriptorRefs> <finalName>AmountTransfer</finalName> <appendAssemblyId>false</appendAssemblyId> 
+				</configuration> </execution> </executions> </plugin> -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>2.3</version>
+				<configuration>
+					<createDependencyReducedPom>true</createDependencyReducedPom>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<transformers>
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+									<mainClass>com.revoult.transfer.AmountTransferApp</mainClass>
+								</transformer>
+							</transformers>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>appassembler-maven-plugin</artifactId>
 				<version>1.1.1</version>
 				<configuration>
+					<includeConfigurationDirectoryInClasspath>true
+					</includeConfigurationDirectoryInClasspath>
 					<assembleDirectory>target</assembleDirectory>
 					<programs>
 						<program>
 							<mainClass>com.revoult.transfer.AmountTransferApp</mainClass>
-							<name>webapp</name>
+							<name>AmountTransfer</name>
 						</program>
 					</programs>
 				</configuration>

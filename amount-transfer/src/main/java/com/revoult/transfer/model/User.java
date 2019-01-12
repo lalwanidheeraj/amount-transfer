@@ -13,7 +13,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  */
 public class User {
 	
-	@JsonIgnore
 	private Long userId;
 	private Set<Account> accounts;
 	private String userName;

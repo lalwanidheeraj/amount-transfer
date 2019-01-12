@@ -3,7 +3,8 @@
  */
 package com.revoult.transfer.service;
 
-import com.revoult.transfer.api.MoneyTransaction;
+import com.revoult.transfer.api.DepositWIthdrawal;
+import com.revoult.transfer.api.MoneyTransfer;
 import com.revoult.transfer.dao.TransactionDao;
 import com.revoult.transfer.exception.CustomException;
 import com.revoult.transfer.factory.AppFactoryProvider;
@@ -24,7 +25,7 @@ public class TransactionServiceImpl implements TransactionService{
 	 * @throws CustomException
 	 */
 	@Override
-	public void transfer(MoneyTransaction transaction) throws CustomException {
+	public void transfer(MoneyTransfer transaction) throws CustomException {
 		transactionDao.transfer(transaction);	
 	}
 	
@@ -35,7 +36,7 @@ public class TransactionServiceImpl implements TransactionService{
 	 * @throws CustomException
 	 */
 	@Override
-	public void deposit(MoneyTransaction transaction) throws CustomException {
+	public void deposit(DepositWIthdrawal transaction) throws CustomException {
 		transactionDao.deposit(transaction);
 	}
 
@@ -46,7 +47,7 @@ public class TransactionServiceImpl implements TransactionService{
 	 * @throws CustomException
 	 */
 	@Override
-	public void withdraw(MoneyTransaction transaction) throws CustomException {
+	public void withdraw(DepositWIthdrawal transaction) throws CustomException {
 		transactionDao.withdraw(transaction);
 	}
 }

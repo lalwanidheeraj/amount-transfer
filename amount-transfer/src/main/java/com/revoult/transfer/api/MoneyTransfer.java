@@ -2,37 +2,49 @@
  * 
  */
 package com.revoult.transfer.api;
-
 import java.math.BigDecimal;
 
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 /**
  * @author Dheeraj Lalwani
- * Bean class to perform the account related transactions.
+ * Bean class to perform the amount transfer transaction.
  */
-public class MoneyTransaction {
+public class MoneyTransfer {
 	
-	@NotNull
-	private Long sourceAccountId;
-	@NotNull
-	private Long destAccountId;
-	@NotNull
+	public MoneyTransfer() {}
+	
+	
+	public MoneyTransfer(String sourceIban, String destIban, BigDecimal amount) {
+		super();
+		this.sourceIban = sourceIban;
+		this.destIban = destIban;
+		this.amount = amount;
+	}
+
+
+	@NotNull(message="Source IBAN cannot be blank.")
+	private String sourceIban;
+	@NotNull(message="Target IBAN cannot be blank.")
+	private String destIban;
+	@NotNull(message="Amount cannot be blank.")
+	@Min(value=1, message="Amount should be greater than 1.")
+	@Digits(integer=50, fraction=2,message="Amount should be not be more than 2 decimal points.")
 	private BigDecimal amount;
-	private String currency;
-	private Long accountId;
 	
-	public Long getSourceAccountId() {
-		return sourceAccountId;
+	public String getSourceIban() {
+		return sourceIban;
 	}
-	public void setSourceAccountId(Long sourceAccountId) {
-		this.sourceAccountId = sourceAccountId;
+	public void setSourceIban(String sourceIban) {
+		this.sourceIban = sourceIban;
 	}
-	public Long getDestAccountId() {
-		return destAccountId;
+	public String getDestIban() {
+		return destIban;
 	}
-	public void setDestAccountId(Long destAccountId) {
-		this.destAccountId = destAccountId;
+	public void setDestIban(String destIban) {
+		this.destIban = destIban;
 	}
 	public BigDecimal getAmount() {
 		return amount;
@@ -40,18 +52,9 @@ public class MoneyTransaction {
 	public void setAmount(BigDecimal amount) {
 		this.amount = amount;
 	}
-	public String getCurrency() {
-		return currency;
+
+	@Override
+	public String toString() {
+		return "MoneyTransfer [sourceIban=" + sourceIban + ", destIban=" + destIban + ", amount=" + amount + "]";
 	}
-	public void setCurrency(String currency) {
-		this.currency = currency;
-	}
-	public Long getAccountId() {
-		return accountId;
-	}
-	public void setAccountId(Long accountId) {
-		this.accountId = accountId;
-	}
-	
-	
 }

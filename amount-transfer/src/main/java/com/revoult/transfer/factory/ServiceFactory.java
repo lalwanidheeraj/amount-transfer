@@ -1,5 +1,7 @@
 package com.revoult.transfer.factory;
 
+import com.revoult.transfer.service.CountryBranchService;
+import com.revoult.transfer.service.CountryBranchServiceImpl;
 import com.revoult.transfer.service.TransactionService;
 import com.revoult.transfer.service.TransactionServiceImpl;
 import com.revoult.transfer.service.UserAccountService;
@@ -17,5 +19,9 @@ public class ServiceFactory implements AbstractFactory{
 	
 	public TransactionService getTransactionService() {
 		return new TransactionServiceImpl();
+	}
+	
+	public CountryBranchService getCountryBranchService() {
+		return new CountryBranchServiceImpl();
 	}
 }

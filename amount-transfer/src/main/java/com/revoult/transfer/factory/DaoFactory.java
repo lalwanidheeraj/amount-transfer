@@ -1,5 +1,7 @@
 package com.revoult.transfer.factory;
 
+import com.revoult.transfer.dao.CountryBranchDao;
+import com.revoult.transfer.dao.CountryBranchDaoImpl;
 import com.revoult.transfer.dao.TransactionDao;
 import com.revoult.transfer.dao.TransactionDaoImpl;
 import com.revoult.transfer.dao.UserAccountDao;
@@ -16,5 +18,8 @@ public class DaoFactory implements AbstractFactory{
 	}
 	public TransactionDao getTransactionDao() {
 		return new TransactionDaoImpl();
+	}
+	public CountryBranchDao getCountryBranchDao() {
+		return new CountryBranchDaoImpl();
 	}
 }

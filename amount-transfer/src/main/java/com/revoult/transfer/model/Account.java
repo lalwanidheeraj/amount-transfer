@@ -19,6 +19,7 @@ public class Account {
 	private String currency;
 	@JsonIgnore
 	private Boolean isActive;
+	private String iban;
 	
 	public Long getAccountId() {
 		return accountId;
@@ -72,5 +73,11 @@ public class Account {
 		} else if (!accountType.equals(other.accountType))
 			return false;
 		return true;
+	}
+	public String getIban() {
+		return iban;
+	}
+	public void setIban(String iban) {
+		this.iban = iban;
 	}
 }

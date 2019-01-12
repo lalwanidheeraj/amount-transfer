@@ -3,8 +3,7 @@
  */
 package com.revoult.transfer;
 
-import org.apache.catalina.LifecycleException;
-
+import com.revoult.transfer.cache.MasterDataCache;
 import com.revoult.transfer.common.AmountTransferUtil;
 import com.revoult.transfer.factory.ConnectionManagerFactory;
 
@@ -16,11 +15,14 @@ public class AmountTransferApp {
 
 	/**
 	 * @param args
-	 * @throws LifecycleException 
+	 * @throws Exception 
 	 */
-	public static void main(String[] args) throws LifecycleException {
-		AmountTransferUtil.init();
+	public static void main(String[] args) throws Exception {
+		System.setProperty("java.util.logging.config.file","logging.properties");
+		System.setProperty("java.util.logging.manager","org.apache.juli.ClassLoaderLogManager");
+		AmountTransferUtil.init("application.properties");
 		ConnectionManagerFactory.populateJpa();
+		MasterDataCache.cacheMasterData();
 		TomcatServer tomcat = new TomcatServer();
 		tomcat.start();
 	}

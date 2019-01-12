@@ -1,29 +1,31 @@
-/**
- * 
- */
 package com.revoult.transfer.rest;
 
-import java.math.BigDecimal;
+import static com.revoult.transfer.common.ResponseMessages.SUCCESS_AMOUNT_TRANSFER;
+import static com.revoult.transfer.common.ResponseMessages.SUCCESS_DEPOSIT;
+import static com.revoult.transfer.common.ResponseMessages.SUCCESS_WITHDRAWAL;
 
 import javax.validation.Valid;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.revoult.transfer.api.MoneyTransaction;
+import com.revoult.transfer.api.DepositWIthdrawal;
+import com.revoult.transfer.api.MoneyTransfer;
 import com.revoult.transfer.exception.CustomException;
 import com.revoult.transfer.factory.AppFactoryProvider;
 import com.revoult.transfer.factory.ServiceFactory;
 import com.revoult.transfer.service.TransactionService;
+import com.revoult.transfer.validation.ValidIban;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 /**
  * @author Dheeraj Lalwani
  * This is the controller class which contains rest apis to perform the account related transactions.
  */
 @Path("/money")
-@Produces(MediaType.APPLICATION_JSON)
+@Api(value = "/money")
 public class TransactionController {
 	
 	private TransactionService transactionService = ((ServiceFactory) AppFactoryProvider.create("Service")).getTransactionService();
@@ -36,15 +38,10 @@ public class TransactionController {
 	 */
 	@POST
 	@Path("/transfer")
-	public Response transfer(@Valid MoneyTransaction transaction) throws CustomException  {
-		if(transaction.getAmount()==null || transaction.getSourceAccountId()==null || transaction.getDestAccountId()==null) {
-			throw new CustomException("Please supply all the valid inputs. ");
-		}
-		if(transaction.getAmount().compareTo(BigDecimal.ZERO) <=0) {
-			throw new CustomException("Please supply the valid transfer amount. ");
-		}
+	@ApiOperation(value = "Transfer money from source account to target account.", notes = "Returns success message, if transaction is successful.")
+	public Response transfer(@Valid @ValidIban MoneyTransfer transaction) throws CustomException  {
 		transactionService.transfer(transaction);
-		return Response.status(Response.Status.OK).build();
+		return Response.status(Response.Status.OK).entity(SUCCESS_AMOUNT_TRANSFER.responseMessage()).build();
 	}
 	/**
 	 * This is the rest interface to deposit the given amount to the supplied account.
@@ -54,15 +51,10 @@ public class TransactionController {
 	 */
 	@POST
 	@Path("/deposit")
-	public String deposit(MoneyTransaction transaction) throws CustomException  {
-		if(transaction.getAmount()==null || transaction.getAccountId()==null || transaction.getCurrency()==null) {
-			throw new CustomException("Please supply all the valid inputs. ");
-		}
-		if(transaction.getAmount().compareTo(BigDecimal.ZERO) <=0) {
-			throw new CustomException("Please supply the valid deposit amount. ");
-		}
+	@ApiOperation(value = "Deposit money to the given account.", notes = "Returns success message, if deposit is successful.")
+	public Response deposit(@Valid DepositWIthdrawal transaction) throws CustomException  {
 		transactionService.deposit(transaction);
-		return "Your deposit request is successful.";
+		return Response.status(Response.Status.OK).entity(SUCCESS_DEPOSIT.responseMessage()).build();
 	}
 	/**
 	 * This is the rest interface to withdraw the supplied amount from the given account.
@@ -72,14 +64,9 @@ public class TransactionController {
 	 */
 	@POST
 	@Path("/withdraw")
-	public String withdraw(MoneyTransaction transaction) throws CustomException  {
-		if(transaction.getAmount()==null || transaction.getAccountId()==null) {
-			throw new CustomException("Please supply all the valid inputs. ");
-		}
-		if(transaction.getAmount().compareTo(BigDecimal.ZERO) <=0) {
-			throw new CustomException("Please supply the valid withdrawl amount. ");
-		}
+	@ApiOperation(value = "Withdraw money from the given account.", notes = "Returns success message, if withdrawal is successful.")
+	public Response withdraw(@Valid DepositWIthdrawal transaction) throws CustomException  {
 		transactionService.withdraw(transaction);
-		return "Please collect your money.";
+		return Response.status(Response.Status.OK).entity(SUCCESS_WITHDRAWAL.responseMessage()).build();
 	}
 }
