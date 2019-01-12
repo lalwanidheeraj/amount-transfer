@@ -10,8 +10,8 @@ package com.revoult.transfer.common;
 public enum ResponseMessages {
 	
 	SUCCESS_ACCOUNT_CREATE("Congratulations your account has been setup. Your IBAN number is "),
-	SUCCESS_AMOUNT_TRANSFER("Amount transafer is successfully completed."),
-	SUCCESS_DEPOSIT("Amount has been credited to beneficiary account."),
+	SUCCESS_AMOUNT_TRANSFER("Amount has been credited to beneficiary account."),
+	SUCCESS_DEPOSIT("Amount has been deposited to given account."),
 	SUCCESS_WITHDRAWAL("Thanks for using the bank. Please collect your amount.");
 	
 	private String responseMessage;
