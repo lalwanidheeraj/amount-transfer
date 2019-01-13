@@ -35,7 +35,7 @@ public class TransactionDaoImpl implements TransactionDao {
 	
 	Logger _logger = Logger.getLogger(TransactionDaoImpl.class.getName()); 
 	
-	private static final String ACCOUNT_SQL_FOR_UPDATE = "SELECT * FROM Account WHERE IBAN=? AND IsActive=true";
+	private static final String ACCOUNT_SQL_FOR_UPDATE = "SELECT * FROM Account WHERE IBAN=? AND IsActive=true FOR UPDATE OF Account";
 	private static final String UPDATE_ACCOUNT_BALANCE = "UPDATE Account SET Balance = ? WHERE AccountID = ? ";
 	
 	private static final int ISOLATION_LEVEL = Connection.TRANSACTION_REPEATABLE_READ;
